@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static from staticfiles  %}
+<head>
+    <meta charset="UTF-8">
+    <title>Person Contacts</title>
+    <script src="{% static 'js/angular-1.0.7.js' %}"></script>
+    <script src="{% static 'js/app/contacts/contacts.js' %}"></script>
+    <script src="{% static 'js/app/contacts/services.js' %}"></script>
+    <script src="{% static 'js/app/contacts/controllers.js' %}"></script>
+
+    <script src="{% static 'js/persons-ngapp.js' %}"></script>
+</head>
+<body data-ng-app="persons-ngapp">
+    <header>
+        {% block nav %}
+            <div style="margin: 0 auto; text-align: center;">
+                <span> <a href="{% url 'contacts:add_person' %}">Add Persons</a></span>
+                <span style="margin-left: 15px;"> <a href="">Add Person Contacts</a></span>
+                <span style="margin-left: 15px;"> <a href="{% url 'contacts:person_list' %}">Person List</a></span>
+                <span style="margin-left: 15px;"> <a href="{% url 'contacts:person_list' %}">Person List</a></span>
+            </div>
+        {% endblock %}
+    </header>
+    {% block body %}
+
+
+    {% endblock body %}
+
+    <footer>
+    {% block footer %}{% endblock footer %}
+    </footer>
+
+</body>
+</html>

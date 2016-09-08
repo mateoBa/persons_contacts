@@ -1,0 +1,17 @@
+{% extends "contacts/base.html" %}
+
+{% block body %}
+  <div>
+      <h1>Perons</h1>
+        {% for p in persons %}
+            <ul>
+                <li>
+                    <span>First Name: {{p.first_name}}</span>
+                    <span style="margin-left: 10px;">- Last Name: {{p.last_name}}</span>
+                    <span style="margin-left: 10px;">- Address: {{p.address}}</span>
+                    <span style="margin-left: 10px;">- Birth Date: {{p.birth_date}}</span>
+                </li>
+            </ul>
+        {% endfor %}
+  </div>
+{% endblock %}
