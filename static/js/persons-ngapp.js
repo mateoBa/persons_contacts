@@ -14,7 +14,7 @@ application.config(['$httpProvider', function($httpProvider) {
 application.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/add_contact_to_person', {
+            when('/add_contact', {
                 templateUrl: '/static/js/app/contacts/add_contact.html',
                 controller: 'DashboardCtrl'
             }).

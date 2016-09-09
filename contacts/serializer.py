@@ -1,6 +1,6 @@
 import datetime
 
-from contacts.models import Person
+from contacts.models import Person, Contact
 from rest_framework import serializers
 
 
@@ -37,15 +37,5 @@ class ContactSerializer(serializers.ModelSerializer):
             person = Person(**validated_data)
             person.save()
             for co in contacts:
-
-
-        logo = None
-        if 'logo' in validated_data.keys():
-            logo = validated_data.pop('logo')
-        merchant = Merchant.objects.get(account__user=request.user)
-        promotion = Promotion(**validated_data)
-        promotion.merchant = merchant
-        promotion.save()
-        promotion.save_images(banner, logo)
-        promotion.save_options(promotion_options)
-        return promotion
+                Contact.objects.create(person=person, contact_type=co.get('contact_type'), value=co.get('value'))
+        return person

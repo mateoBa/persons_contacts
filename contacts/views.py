@@ -21,6 +21,6 @@ class PersonList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PersonList, self).get_context_data(**kwargs)
-        context['persons'] = Person.objects.all()
+        context['persons'] = Person.objects.all().order_by('-id')
         return context
 

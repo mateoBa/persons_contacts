@@ -1,20 +1,29 @@
-from contacts.models import Contact
+from rest_framework import generics
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+
+from contacts.models import Contact, CONTACT_TYPES
 from contacts.models import Person
+from contacts.serializer import ContactSerializer
 
 
-class PromotionsApi(viewsets.ModelViewSet):
+class ContactTypeList(ListAPIView):
+
+    def get(self, request, *args, **kwargs):
+        return Response(CONTACT_TYPES)
+
+
+class PromotionsApi(ModelViewSet):
     """ Show Promotions """
-    queryset = Person.objects.all()
-    serializer_class = PromotionSerializer
+    serializer_class = ContactSerializer
     paginate_by = 100
     paginate_by_param = 'page_size'
     max_paginate_by = 1000
-    permission_classes = [IsMerchantOwner]
+    permission_classes = []
 
     def get_queryset(self):
-        n = datetime.datetime.now()
-        return Promotion.objects.filter(to_date__gte=n,
-                                        merchant__account__user=self.request.user).exclude(status='CA').order_by('-id')
+        return Person.objects.all()
 
     def retrieve(self, request, pk=None):
         queryset = Promotion.objects.all()
@@ -45,12 +54,12 @@ class PromotionsApi(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         return Response('Error, not allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    @detail_route(methods=['get'], url_path='delete')
-    def delete_promotion(self, request, pk=None):
-        try:
-            promotion = Promotion.objects.get(id=pk)
-        except Merchant.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        promotion.set_canceled()
-        return Response(status=status.HTTP_200_OK)
+    # @detail_route(methods=['get'], url_path='delete')
+    # def delete_promotion(self, request, pk=None):
+    #     try:
+    #         promotion = Promotion.objects.get(id=pk)
+    #     except Merchant.DoesNotExist:
+    #         return Response(status=status.HTTP_404_NOT_FOUND)
+    #
+    #     promotion.set_canceled()
+    #     return Response(status=status.HTTP_200_OK)
