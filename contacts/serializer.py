@@ -1,27 +1,40 @@
 import datetime
 
+from django.core.exceptions import ValidationError
+
 from contacts.models import Person, Contact
 from rest_framework import serializers
+from django.core.validators import validate_email
 
 
-class ContactSerializer(serializers.ModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ('id', 'first_name', 'last_name', 'address', 'birth_date', 'contacts')
 
-    contacts = serializers.ListField(required=False)
+    contacts = serializers.SerializerMethodField()
 
     def get_contacts(self, obj):
         return obj.get_contacts()
 
-    def get_images(self, obj):
-        return obj.get_images()
-
     def validate_birth_date(self, value):
         now = datetime.datetime.now()
         if value.date() >= now.date():
-            raise serializers.ValidationError('Fecha de nacimiento no puede ser mayor o igual a hoy')
+            raise serializers.ValidationError('Birth date can not be bigger or equal than today.')
         return value
+
+    def validate_contacts(self, obj):
+        for contact in obj:
+            if contact.get('contact_type') == 'email':
+                try:
+                    validate_email(contact.get('value'))
+                except ValidationError:
+                    raise serializers.ValidationError('Incorrect email contact')
+            if contact.get('contact_type') in ['phone', 'cel']:
+                try:
+                    int(contact.get('value'))
+                except:
+                    raise serializers.ValidationError('Error, only number for %s.' % contact.get('contact_type'))
 
     def validate(self, data):
         contacts = data.get('contacts', '')
@@ -30,12 +43,11 @@ class ContactSerializer(serializers.ModelSerializer):
 
         return data
 
-    def create(self, validated_data):
-        request = self.context['request']
+    def save(self, validated_data):
         contacts = validated_data.pop('contacts')
         if contacts:
             person = Person(**validated_data)
             person.save()
             for co in contacts:
                 Contact.objects.create(person=person, contact_type=co.get('contact_type'), value=co.get('value'))
-        return person
+            return person

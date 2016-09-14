@@ -8,6 +8,8 @@ CONTACT_TYPES = (
     ('facebook', 'Facebook'),
     ('twitter', 'Twitter'),
     ('linkedin', 'LinkedIn'),
+    ('phone', 'Phone'),
+    ('cel', 'Celphone'),
 )
 
 

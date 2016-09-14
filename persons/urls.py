@@ -16,7 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from contacts.api import ContactTypeList
+from contacts.urls import person_contact_router
+from contacts.views import AddPerson
+
 urlpatterns = [
+    url(r'^$', AddPerson.as_view(), name='add_person'),
     url(r'^contacts/', include('contacts.urls', namespace="contacts")),
+    url(r'^api/v1/contact_types/$', ContactTypeList.as_view()),
+    url(r'^api/v1/', include(person_contact_router.urls)),
     url(r'^admin/', admin.site.urls),
 ]

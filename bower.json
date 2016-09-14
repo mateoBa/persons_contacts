@@ -1,0 +1,21 @@
+{
+  "name": "Mateo",
+  "homepage": "https://github.com/mateoba/persons_contacts",
+  "authors": [
+    "mateoba <mateobasaldua@gmail.com>"
+  ],
+  "description": "Test Project with Django and Angular",
+  "directory": "static/",
+  "main": "Person Contacts",
+  "keywords": [
+    "person_contact"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular-route": "^1.5.8",
+    "angular": "^1.5.8",
+    "bootstrap": "^3.3.7",
+    "angular-resource": "^1.5.8"
+  }
+}

@@ -1,6 +1,7 @@
 
 var application = angular.module('persons-ngapp', [
     'ngRoute',
+    'ngResource',
 
     //app
     'contacts',
@@ -16,10 +17,11 @@ application.config(['$routeProvider',
         $routeProvider.
             when('/add_contact', {
                 templateUrl: '/static/js/app/contacts/add_contact.html',
-                controller: 'DashboardCtrl'
+                controller: 'addPersonContact'
             }).
             otherwise({
-                redirectTo: '/dashboard'
+                templateUrl: '/static/js/app/contacts/404.html',
+                controller: 'addPersonContact'
             });
 }]);
 

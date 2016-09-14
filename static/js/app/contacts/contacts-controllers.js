@@ -1,17 +1,15 @@
 
 var contact_controller = angular.module('contacts.controllers', []);
 
-contact_controller.controller('addPromotionsCtrl', ['$scope', '$filter', 'contactService',
-                                                    function($scope, $filter, contactService) {
+contact_controller.controller('addPersonContact', ['$scope', '$filter', 'contactService', 'persons',
+                                                    function($scope, $filter, contactService, persons) {
 
     $scope.person = {};
     $scope.person.contacts = [];
     $scope.contact = {};
-    contactService.getContactTypes.then(
+    contactService.getContactTypes().then(
         function(res) {
-            console.log(res.data);
-            console.log(res.data[0][0])
-            $scope_contact_types = res.data;
+            $scope.contact_types = res.data;
         },
         function(res){
             alert('An error occurred in server');
@@ -21,8 +19,23 @@ contact_controller.controller('addPromotionsCtrl', ['$scope', '$filter', 'contac
 
     //////////////////////////////////// Contacts ///////////////////////////
     $scope.submit_contact = function(contact){
+        console.log('add contact-');
+        console.log(contact.value);
+        console.log(contact.contact_type);
         if (contact.value && contact.contact_type){
-            $scope.person.contacts.push({contact_type: contact.contact_type, value: contact.value});
+            var is_not = true;
+            for (var co in $scope.person.contacts){
+                var opt = $scope.person.contacts[co];
+                if (opt['value'] == contact.value) {
+                    is_not = false;
+                    break;
+                }
+            }
+            if (is_not) {
+                $scope.person.contacts.push({contact_type: contact.contact_type, value: contact.value});
+                $scope.contact.contact_type = '';
+                $scope.contact.value = '';
+            }
         }
     }
 
@@ -30,56 +43,46 @@ contact_controller.controller('addPromotionsCtrl', ['$scope', '$filter', 'contac
         $scope.person.contacts.splice(idx, 1);
     }
     ///////////////////// valid form ////////////////////////////////
-    function is_form_valid() {
-        var dates = false; var options = false; var descriptions = false; var banner = false;
-        if (($scope.promotion.start_date !== undefined) && ($scope.promotion.end_date !== undefined)){
-            if ($scope.promotion.start_date <= $scope.promotion.end_date) {
-                dates = true;
-                $scope.dates_error = false;
-            }else {
-                $scope.dates_error = true;
-            }
-        }
-        options = ($scope.promotion_options !== undefined && $scope.promotion_options.length > 0);
-        descriptions = (($scope.promotion.disclaimer !== undefined && $scope.promotion.disclaimer.length > 5) &&
-                        ($scope.promotion.description !== undefined && $scope.promotion.description.length > 5));
-        banner = ($scope.promotion.banner !== undefined);
-        if (dates && options && descriptions && banner){
-            return true;
-        }
-        return false;
-    }
     $scope.form_valid = function(){
-        return is_form_valid();
+        console.log('first_name ' + $scope.person.first_name);
+        console.log('last_name ' + $scope.person.last_name);
+        console.log('address ' + $scope.person.address);
+        console.log('birth_date ' + $scope.person.birth_date);
+        console.log('contacts ' + $scope.person.contacts);
+        console.log(($scope.person.first_name && $scope.person.last_name && $scope.person.address &&
+                    $scope.person.birth_date && $scope.person.contacts.length > 0));
+        return ($scope.person.first_name && $scope.person.last_name && $scope.person.address &&
+                $scope.person.birth_date && $scope.person.contacts.length > 0);
     }
 
-    ///////////////////////////////////// save promotion /////////////////////////////
+    ///////////////////////////////////// save person and contacts /////////////////////////////
 
-    $scope.se_guardo = false;
-    $scope.save_promotion = function(promotion){
-        var data_to_send = {'title': promotion.title, 'from_date': $filter('date')(promotion.start_date,'yyyy-MM-ddTHH:mm'),
-                            'to_date': $filter('date')(promotion.end_date,'yyyy-MM-ddTHH:mm'), 'website': promotion.web_site,
-                            'promotion_options': $scope.promotion_options, 'description': promotion.description,
-                            'disclaimer': promotion.disclaimer, 'banner': promotion.banner, 'logo': promotion.logo}
-        Upload.upload({
-            method: 'POST',
-            url: '/api/v1/promotion/',
-            data: data_to_send,
-          }).then(
-            function(res) {
-                $uibModalInstance.dismiss('cancel');
-                $rootScope.$broadcast('promotionsReload');
-            },
-            function(response) {
-                if (response.data){
-                    var msg = '';
-                    Object.getOwnPropertyNames(response.data).forEach(function(val, idx, array) {
-                        msg = msg + val + ': ' + response.data[val] + '--';
-                    });
-                }else {
-                    msg = "An error has occurred, please try again later";
-                };
-                $scope.msg = msg;
-            });
+    $scope.submit = function(person){
+        console.log('submit de persona-----');
+        console.log(person);
+//        var data_to_send = {'title': promotion.title, 'from_date': $filter('date')(promotion.start_date,'yyyy-MM-ddTHH:mm'),
+//                            'to_date': $filter('date')(promotion.end_date,'yyyy-MM-ddTHH:mm'), 'website': promotion.web_site,
+//                            'promotion_options': $scope.promotion_options, 'description': promotion.description,
+//                            'disclaimer': promotion.disclaimer, 'banner': promotion.banner, 'logo': promotion.logo}
+//        Upload.upload({
+//            method: 'POST',
+//            url: '/api/v1/promotion/',
+//            data: data_to_send,
+//          }).then(
+//            function(res) {
+//                $uibModalInstance.dismiss('cancel');
+//                $rootScope.$broadcast('promotionsReload');
+//            },
+//            function(response) {
+//                if (response.data){
+//                    var msg = '';
+//                    Object.getOwnPropertyNames(response.data).forEach(function(val, idx, array) {
+//                        msg = msg + val + ': ' + response.data[val] + '--';
+//                    });
+//                }else {
+//                    msg = "An error has occurred, please try again later";
+//                };
+//                $scope.msg = msg;
+//            });
     }
 }]);

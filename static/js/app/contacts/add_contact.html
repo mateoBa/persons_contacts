@@ -1,25 +1,38 @@
 <h1>Add Contacts to a new Person</h1>
 
-<form name='form' ng-submit="submit(person)" ng-hide="se_guardo">
+<form name='form' ng-submit="submit(person)">
     <div id="div_first_name">
-        <label>First Name</label>
-        <input id="id_first_name" name="title" type='text' ng-model="person.first_name" required>
+        <label class="control-label requiredField">
+            First Name<span class="asteriskField">*</span>
+        </label>
+        <input class="form-control"
+               id="id_first_name" name="title" type='text' ng-model="person.first_name" required>
     </div>
-    <div id="div_last_name">
-        <label>Last Name</label>
-        <input id="id_last_name" name="title" type='text' ng-model="person.last_name" required>
+    <div id="div_last_name" class="top15">
+        <label class="control-label requiredField">
+            Last Name<span class="asteriskField">*</span>
+        </label>
+        <input class="form-control"
+               id="id_last_name" name="title" type='text' ng-model="person.last_name" required>
     </div>
-    <div id="div_address">
-        <label>Address</label>
-        <input id="id_address" name="title" type='text' ng-model="person.address" required>
+    <div id="div_address" class="top15">
+        <label>Address<span class="asteriskField">*</span>
+        </label>
+        <input id="id_address" class="form-control" name="title" type='text' ng-model="person.address" required>
     </div>
-    <div id="div_birth_date">
-        <label>Birth Date</label>
-        <input id="id_birth_date" name="title" type='date' ng-model="person.birth_date" required>
+    <div id="div_birth_date" class="top15" style="width: 180px;" >
+        <label>
+            Birth Date<span class="asteriskField">*</span>
+        </label>
+        <input id="id_birth_date" class="form-control"
+               name="title" type='date' ng-model="person.birth_date" required>
     </div>
 
-    <div id="div_contacts"><label>Contacts<span class="asteriskField">*</span></label>
-        <ul>
+    <div id="div_contacts" class="top15">
+        <label>Contacts<span class="asteriskField">*</span></label>
+        <span class="text-warning" ng-show="person.contacts.length == 0">You have to charge at least one contact to person</span>
+
+        <ul style="margin-left: 20px;">
             <li ng-repeat="co in person.contacts">
                 <span >
                     {{ co.contact_type }}:  {{ co.value }}
@@ -27,25 +40,31 @@
                 <a href="javascript:void(0)" ng-click="delete_item($index)">delete</a>
             </li>
         </ul>
-        <div>
-            <h5 style="color: red;" ng-show="person.contacts.length == 0">You have to charge at least one contact to person</h5>
-        <div>
-            <form name='form_contacts' ng-submit="submit_contact(contact)">
+        <div style="margin-left: 20px; width: 60%;">
+            <form name='form_contacts'>
                 <div>
-                    <label>Contact Type<span class="asteriskField">*</span></label>
-                       <select ng-model="contact.contact_type" required>
+                    <label>Contact Type <span class="asteriskField">*</span></label>
+                       <select class="form-control" ng-model="contact.contact_type" ng-required>
                           <option value="">--- Please select Contact Type ---</option>
                            <option ng-repeat="type in contact_types"  value="{{type[0]}}">{{type[1]}}</option>
                        </select>
-                       <div id="div_contact_value">
-                            <label>Value</label>
-                            <input id="id_contact_value" type='text' ng-model="contact.value">
-                        </div>
-
+                       <div id="div_contact_value" ng-if="!(contact.contact_type == 'phone' || contact.contact_type == 'cel')">
+                            <label>Value <span class="asteriskField">*</span></label>
+                            <input class="form-control" id="id_contact_value" type='text' ng-model="contact.value">
+                       </div>
+                       <div id="div_contact_value_number" ng-if="contact.contact_type == 'phone' || contact.contact_type == 'cel'">
+                           <label>Number <span class="asteriskField">*</span></label>
+                           <input class="form-control" id="id_contact_number" type='number' ng-model="contact.value">
+                       </div>
                 </div>
-                <div class="input-in-form">
-                    <button ng-disabled="form_installments.$invalid" class="btn btn-primary" type="submit">{{ 'Save' | translate }}</button>
+                <div class="top15" style="text-align: right;">
+                    <button ng-disabled="form_contacts.$invalid" ng-click="submit_contact(contact)"
+                            class="btn btn-xs btn-primary" type="submit">Add</button>
                 </div>
             </form>
         </div>
     </div>
+    <div class="top15">
+        <button ng-disabled="!form_valid()" class="btn btn-md btn-success" type="submit">Save</button>
+    </div>
+</form>
