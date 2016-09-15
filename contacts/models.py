@@ -31,3 +31,7 @@ class Contact(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     contact_type = models.CharField(max_length=100, help_text="Contact type", choices=CONTACT_TYPES)
     value = models.CharField(max_length=200)
+
+    def to_dict(self):
+        return dict(contact_type=self.get_contact_type_display(),
+                    value=self.value)

@@ -19,6 +19,15 @@ application.config(['$routeProvider',
                 templateUrl: '/static/js/app/contacts/add_contact.html',
                 controller: 'addPersonContact'
             }).
+            when('/person_list', {
+                templateUrl: '/static/js/app/contacts/persons.html',
+                controller: 'personsCtrl'
+            }).
+            when('/person_detail/:personId', {
+                templateUrl: '/static/js/app/contacts/person_details.html',
+                controller: 'personDetailsCtrl'
+
+            }).
             otherwise({
                 templateUrl: '/static/js/app/contacts/404.html',
                 controller: 'addPersonContact'

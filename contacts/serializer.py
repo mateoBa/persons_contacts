@@ -23,24 +23,22 @@ class PersonSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Birth date can not be bigger or equal than today.')
         return value
 
-    def validate_contacts(self, obj):
-        for contact in obj:
-            if contact.get('contact_type') == 'email':
-                try:
-                    validate_email(contact.get('value'))
-                except ValidationError:
-                    raise serializers.ValidationError('Incorrect email contact')
-            if contact.get('contact_type') in ['phone', 'cel']:
-                try:
-                    int(contact.get('value'))
-                except:
-                    raise serializers.ValidationError('Error, only number for %s.' % contact.get('contact_type'))
-
     def validate(self, data):
-        contacts = data.get('contacts', '')
+        contacts = self.initial_data.get('contacts', '')
         if len(contacts) == 0:
             raise serializers.ValidationError('Por favor, cargar como minimo un contacto')
-
+        else:
+            for contact in contacts:
+                if contact.get('contact_type') == 'email':
+                    try:
+                        validate_email(contact.get('value'))
+                    except ValidationError:
+                        raise serializers.ValidationError('Incorrect email contact')
+                if contact.get('contact_type') in ['phone', 'cel']:
+                    try:
+                        int(contact.get('value'))
+                    except:
+                        raise serializers.ValidationError('Error, only number for %s.' % contact.get('contact_type'))
         return data
 
     def save(self, validated_data):

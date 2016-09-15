@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 
 from contacts.models import Contact, CONTACT_TYPES
 from contacts.models import Person
@@ -11,21 +11,17 @@ from contacts.serializer import PersonSerializer
 
 
 class ContactTypeList(ListAPIView):
-
     def get(self, request, *args, **kwargs):
         return Response(CONTACT_TYPES)
 
 
-class PersonsContactApi(ModelViewSet):
+class PersonsContactApi(viewsets.ModelViewSet):
     """ Show Persons """
+    queryset = Person.objects.all()
     serializer_class = PersonSerializer
     paginate_by = 100
     paginate_by_param = 'page_size'
     max_paginate_by = 1000
-    permission_classes = []
-
-    def get_queryset(self):
-        return Person.objects.all()
 
     def retrieve(self, request, pk=None):
         queryset = Person.objects.all()
@@ -41,7 +37,8 @@ class PersonsContactApi(ModelViewSet):
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
-        import pdb; pdb.set_trace()
+        import pdb;
+        pdb.set_trace()
         try:
             if serializer.is_valid():
                 with transaction.atomic():
