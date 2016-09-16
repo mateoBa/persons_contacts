@@ -19,8 +19,6 @@ contact_service.factory('persons', ['$resource',
             isArray: true,
             transformResponse: function (data) {
                 var wrappedResult = angular.fromJson(data);
-                console.log('estoy en servicio');
-                console.log(wrappedResult);
                 var meta = {
                     'count': wrappedResult.count
                 };

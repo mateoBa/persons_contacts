@@ -1,6 +1,6 @@
 
 <div class="center-block top30" style="width: 80%;">
-    <h4>Persons</h4>
+    <h3>Persons</h3>
     <div class="table-responsive top30">
         <table class="table table-hover">
             <tr>
@@ -18,14 +18,14 @@
                 <td>{{ person.address }}</td>
                 <td>{{ person.birth_date | date:'dd/MM/yyyy' }}</td>
                 <td>
-                    <a role="button" class="btn btn-default btn-xs" href="#/person_detail/{{ p.id }}">details</a>
+                    <a role="button" class="btn btn-default btn-xs" href="#/person_detail/{{ person.id }}">details</a>
                 </td>
             </tr>
         </table>
-        <uib-pagination total-items="bigTotalItems" ng-change="pageChanged()" ng-model="bigCurrentPage"
+        <ul uib-pagination total-items="bigTotalItems" ng-change="pageChanged()" ng-model="bigCurrentPage"
                         items-per-page="itemsPerPage" max-size="100" class="pagination-md" boundary-links="true"
                         force-ellipses="true">
-        </uib-pagination>
+        </ul>
         <pre>Total: {{ totalItems }}</pre>
 
     </div>

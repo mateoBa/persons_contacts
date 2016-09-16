@@ -20,12 +20,14 @@
             </label>
             <input id="id_address" class="form-control" name="title" type='text' ng-model="person.address" required>
         </div>
-        <div id="div_birth_date" class="top15" style="width: 180px;" >
+        <div id="div_birth_date" class="top15" style="width: 310px;">
             <label>
                 Birth Date<span class="asteriskField">*</span>
             </label>
-            <input id="id_birth_date" class="form-control"
-                   name="title" type='date' ng-model="person.birth_date" required>
+            <input type="text" readonly="" value="{{ person.birth_date  | date:'dd/MM/yyyy' }}"
+                   class="form-control" ng-click="show_date=!show_date" required>
+            <div ng-show="show_date" uib-datepicker type="text" name="birth_date" readonly="" class="well well-sm"
+                   ng-model="birth_date" datepicker-options="options" ng-click="verify_date()"></div>
         </div>
 
         <div id="div_contacts" class="top15">
@@ -64,6 +66,7 @@
                 </form>
             </div>
         </div>
+        <div class="text-danger" ng-show="msg">{{msg}}</div>
         <div class="top15">
             <input type="submit" ng-disabled="!form_valid()" class="btn btn-md btn-success" value="Save" ng-click="submit(person)">
         </div>

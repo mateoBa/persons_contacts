@@ -1,8 +1,8 @@
 
-var contact_controller = angular.module('contacts.controllers', []);
+var contact_controller = angular.module('contacts.controllers', ['ui.bootstrap']);
 
-contact_controller.controller('addPersonContact', ['$scope', 'contactService', 'persons',
-                                                    function($scope, contactService, persons) {
+contact_controller.controller('addPersonContact', ['$scope', '$window' , 'contactService', 'persons',
+                                                    function($scope, $window, contactService, persons) {
 
     $scope.person = {};
     $scope.person.contacts = [];
@@ -16,6 +16,16 @@ contact_controller.controller('addPersonContact', ['$scope', 'contactService', '
         }
 
     )
+
+    $scope.show_date = false;
+    $scope.person.birth_date = '';
+    $scope.birth_date = '';
+    $scope.verify_date = function(){
+        if ($scope.person.birth_date != $scope.birth_date){
+            $scope.person.birth_date = $scope.birth_date;
+            $scope.show_date = false;
+        }
+    };
 
     //////////////////////////////////// Contacts ///////////////////////////
     $scope.submit_contact = function(contact){
@@ -48,10 +58,19 @@ contact_controller.controller('addPersonContact', ['$scope', 'contactService', '
     ///////////////////////////////////// save person and contacts /////////////////////////////
 
     $scope.submit = function(person){
-        console.log('submit de persona-----');
-        console.log(person);
         persons.save({}, person, function(res){
-                alert(res);
+            $window.location.href = '/contacts/#/person_list';
+        },
+        function(response) {
+            if (response.data){
+                    var msg = '';
+                    Object.getOwnPropertyNames(response.data).forEach(function(val, idx, array) {
+                        msg = msg + val + ': ' + response.data[val] + '--';
+                    });
+                }else {
+                    msg = "An error has occurred, please try again later";
+                };
+                $scope.msg = msg;
         })
     }
 }]);
@@ -74,8 +93,6 @@ contact_controller.controller('personsCtrl', ['$scope', 'persons',
         query['page'] = page;
 
         persons.query(query, function(results){
-            console.log(results);
-            console.log(results.$meta.count);
             $scope.persons = results;
             $scope.totalItems = results.$meta.count;
             $scope.bigTotalItems = results.$meta.count;
@@ -85,4 +102,14 @@ contact_controller.controller('personsCtrl', ['$scope', 'persons',
         make_query($scope.bigCurrentPage);
     };
     make_query(1);
+}]);
+
+contact_controller.controller('personDetailsCtrl', ['$scope', '$routeParams', 'persons',
+                                               function($scope, $routeParams, persons) {
+    $scope.personId = $routeParams.personId;
+    persons.get({personId: $routeParams.personId}, function (person) {
+        document.title = 'Person: ' + person.id;
+        $scope.person = person;
+    });
+
 }]);

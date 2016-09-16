@@ -26,7 +26,7 @@ class PersonSerializer(serializers.ModelSerializer):
     def validate(self, data):
         contacts = self.initial_data.get('contacts', '')
         if len(contacts) == 0:
-            raise serializers.ValidationError('Por favor, cargar como minimo un contacto')
+            raise serializers.ValidationError('Please, charge at least one contact')
         else:
             for contact in contacts:
                 if contact.get('contact_type') == 'email':

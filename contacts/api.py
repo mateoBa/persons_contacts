@@ -37,8 +37,6 @@ class PersonsContactApi(viewsets.ModelViewSet):
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
-        import pdb;
-        pdb.set_trace()
         try:
             if serializer.is_valid():
                 with transaction.atomic():
