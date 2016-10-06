@@ -25,9 +25,9 @@
     <header>
         {% block nav %}
             <div style="margin: 0 auto; text-align: center;">
-                <span> <a href="{% url 'add_person' %}">Add Persons</a></span>
-                <span style="margin-left: 15px;"> <a href="/contacts/#/add_contact">Add Person Contacts</a></span>
-                <span style="margin-left: 15px;"> <a href="{% url 'contacts:person_list' %}">Person List</a></span>
+                <span> <a href="{% url 'add_person' %}">Add Persons (Django)</a></span>
+                <span style="margin-left: 15px;"> <a href="{% url 'contacts:person_list' %}">Person List (Django)</a></span>
+                <span style="margin-left: 15px;"> <a href="/contacts/#/add_contact">Add Person Contacts (Angular)</a></span>
                 <span style="margin-left: 15px;"> <a href="/contacts/#/person_list">Person List (Angular)</a></span>
             </div>
         {% endblock %}

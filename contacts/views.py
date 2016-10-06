@@ -15,6 +15,11 @@ class AddPerson(FormView):
         form.save()
         return super(AddPerson, self).form_valid(form)
 
+    def form_invalid(self, form):
+        import pdb
+        pdb.set_trace()
+        return super(AddPerson, self).form_invalid(form)
+
 
 class PersonList(TemplateView):
     template_name = 'contacts/person_list.html'

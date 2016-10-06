@@ -55,8 +55,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'persons.urls'
 
-DEBUG = True
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -146,6 +144,3 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
