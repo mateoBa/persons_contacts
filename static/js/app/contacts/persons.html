@@ -1,0 +1,32 @@
+
+<div class="center-block top30" style="width: 80%;">
+    <h3>Persons</h3>
+    <div class="table-responsive top30">
+        <table class="table table-hover">
+            <tr>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Address</th>
+              <th>Birth Date</th>
+              <th></th>
+            </tr>
+            <tr ng-repeat="person in persons | orderBy:'-id'">
+                <td>{{ person.id }}</td>
+                <td>{{ person.first_name }}</td>
+                <td>{{ person.last_name }}</td>
+                <td>{{ person.address }}</td>
+                <td>{{ person.birth_date | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <a role="button" class="btn btn-default btn-xs" href="#/person_detail/{{ person.id }}">details</a>
+                </td>
+            </tr>
+        </table>
+        <ul uib-pagination total-items="bigTotalItems" ng-change="pageChanged()" ng-model="bigCurrentPage"
+                        items-per-page="itemsPerPage" max-size="100" class="pagination-md" boundary-links="true"
+                        force-ellipses="true">
+        </ul>
+        <pre>Total: {{ totalItems }}</pre>
+
+    </div>
+</div>

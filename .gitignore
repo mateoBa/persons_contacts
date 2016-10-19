@@ -1,4 +1,9 @@
 *.pyc
 .idea/
 db.sqlite3
-
+static/angular-bootstrap/
+static/angular-resource/
+static/angular-route/
+static/angular/
+static/bootstrap/
+static/jquery/

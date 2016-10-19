@@ -1,0 +1,29 @@
+<div class="center-block top30" style="width: 80%;" id="person-details">
+    <p>
+      <span>First Name: <strong>{{ person.first_name }}</strong></span>
+    </p>
+    <p>
+      <span>Last Name: <strong>{{ person.last_name }}</strong></span>
+    </p>
+    <p>
+      <span>Address: <strong>{{ person.address }}</strong></span>
+    </p>
+    <p>
+      <span>Born on: <strong>{{ person.birth_date | date:'dd/MM/yyyy '}}</strong></span>
+    </p>
+    <p ng-show="person.contacts.length">
+        <span>Contacts:</span>
+        <ul style="margin-left: 30px">
+            <li ng-repeat="contact in person.contacts">
+                <span>{{ contact.contact_type}}: {{ contact.value }}</span>
+            </li>
+        </ul>
+    </p>
+    <p ng-show="!person.contacts.length">
+        <span class="text-warning">This person has not contacts. This person was charged in django form.</span>
+    </p>
+
+    <a href="javascript:history.back()" data-ng-click="delete_person(person.id)" role="button"
+       class="btn btn-default top30"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
+
+</div>
